@@ -35,12 +35,8 @@ impl RelaxStrategy for Spin {
 /// This is generally used as a strategy for minimising power consumption and priority inversion on targets that have a
 /// standard library available. Note that such targets have scheduler-integrated concurrency primitives available, and
 /// you should generally use these instead, except in rare circumstances.
-#[cfg(feature = "std")]
-#[cfg_attr(docsrs, doc(cfg(feature = "std")))]
 pub struct Yield;
 
-#[cfg(feature = "std")]
-#[cfg_attr(docsrs, doc(cfg(feature = "std")))]
 impl RelaxStrategy for Yield {
     #[inline(always)]
     fn relax() {

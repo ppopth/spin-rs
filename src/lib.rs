@@ -1,4 +1,3 @@
-#![cfg_attr(all(not(feature = "std"), not(test)), no_std)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![deny(missing_docs)]
 
@@ -60,7 +59,6 @@
 //!
 //! - `std` enables support for thread yielding instead of spinning
 
-#[cfg(any(test, feature = "std"))]
 extern crate core;
 
 #[cfg(feature = "portable_atomic")]
@@ -91,8 +89,6 @@ pub mod rwlock;
 #[cfg(feature = "mutex")]
 #[cfg_attr(docsrs, doc(cfg(feature = "mutex")))]
 pub use mutex::MutexGuard;
-#[cfg(feature = "std")]
-#[cfg_attr(docsrs, doc(cfg(feature = "std")))]
 pub use relax::Yield;
 pub use relax::{RelaxStrategy, Spin};
 #[cfg(feature = "rwlock")]
@@ -199,22 +195,6 @@ pub mod lock_api {
 /// In the event of an invalid operation, it's best to abort the current process.
 #[cfg(feature = "fair_mutex")]
 fn abort() -> ! {
-    #[cfg(not(feature = "std"))]
-    {
-        // Panicking while panicking is defined by Rust to result in an abort.
-        struct Panic;
-
-        impl Drop for Panic {
-            fn drop(&mut self) {
-                panic!("aborting due to invalid operation");
-            }
-        }
-
-        let _panic = Panic;
-        panic!("aborting due to invalid operation");
-    }
-
-    #[cfg(feature = "std")]
     {
         std::process::abort();
     }

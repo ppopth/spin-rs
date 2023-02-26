@@ -543,7 +543,6 @@ impl fmt::Display for LockRejectReason {
     }
 }
 
-#[cfg(feature = "std")]
 impl std::error::Error for LockRejectReason {}
 
 #[cfg(feature = "lock_api")]

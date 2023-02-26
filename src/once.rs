@@ -3,7 +3,7 @@
 
 use crate::{
     atomic::{AtomicU8, Ordering},
-    RelaxStrategy, Spin,
+    RelaxStrategy, Yield,
 };
 use core::{cell::UnsafeCell, fmt, marker::PhantomData, mem::MaybeUninit};
 
@@ -26,7 +26,7 @@ use core::{cell::UnsafeCell, fmt, marker::PhantomData, mem::MaybeUninit};
 ///     // run initialization here
 /// });
 /// ```
-pub struct Once<T = (), R = Spin> {
+pub struct Once<T = (), R = Yield> {
     phantom: PhantomData<R>,
     status: AtomicStatus,
     data: UnsafeCell<MaybeUninit<T>>,
